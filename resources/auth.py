@@ -16,13 +16,13 @@ class Auth(Resource):
         用户登录返回Token信息
         :return:
         """
-        return {'token': "123"}
+        return {'code': 20000, 'data': 'admin-token'}
 
 
 resources = [
     {
         "cls": Auth,
-        "url_rule": ['/auth']
+        "url_rule": ['/user/login']
     }
 
 ]

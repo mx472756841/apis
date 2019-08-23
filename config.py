@@ -9,10 +9,13 @@ class Config:
     WHITE_ROUTE_LIST = [
         "^/login"
     ]
+    #: 可跨域访问域名
+    CORS_ORIGINS = []
 
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    CORS_ORIGINS = ["http://localhost:9527"]
 
 
 class TestingConfig(Config):

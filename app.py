@@ -10,6 +10,7 @@ import os
 
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 
 from common.middlewares import before_request_func
 from config import config
@@ -40,19 +41,21 @@ def create_app():
     config_name = os.getenv('FLASK_CONFIG') or 'default'
     app = Flask(__name__)
 
-    #: app日志处理
+    #: app配置环境处理
     app.config.from_object(config[config_name])
-    api = Api(app, prefix='/v1')
-
-    #: todo 跨域访问
-
     #: 加载所有restful resource
+    api = Api(app)
     add_resources(api)
-
     #: 统一加载before_request
     for func in before_request_func:
         app.before_request(func)
 
+    #: 跨域访问, 指定允许的请求地址 直接指定参数，也可以指定单独path的跨域请求处理
+    #: https://flask-cors.readthedocs.io/en/latest/
+    CORS(app, origins=app.config['CORS_ORIGINS'], max_age=86400)
+
+    #: 初始化SQLArchemy
+    db = SQLAlchemy(app)
     return app
 
 
