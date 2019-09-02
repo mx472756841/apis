@@ -9,8 +9,8 @@ import importlib
 import os
 
 from flask import Flask
-from flask_restful import Api
 from flask_cors import CORS
+from flask_restful import Api
 
 from common.middlewares import before_request_func
 from config import config
@@ -54,12 +54,10 @@ def create_app():
     #: https://flask-cors.readthedocs.io/en/latest/
     CORS(app, origins=app.config['CORS_ORIGINS'], max_age=86400)
 
-    #: 初始化SQLArchemy
-    db = SQLAlchemy(app)
     return app
 
 
 app = create_app()
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=8801)
