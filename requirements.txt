@@ -2,5 +2,6 @@ flask>=1.0
 flask_restful>=0.3.7
 flask_cors>=3.0.8
 flask_httpauth>=3.3.0
+Flask-SQLAlchemy==2.3.1
 pymysql==0.9.3
 gunicorn==19.9.0

@@ -11,9 +11,12 @@ import os
 from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 
 from common.middlewares import before_request_func
 from config import config
+
+db = SQLAlchemy()
 
 
 def add_resources(api):
@@ -43,6 +46,10 @@ def create_app():
 
     #: app配置环境处理
     app.config.from_object(config[config_name])
+
+    #: 数据库处理
+    db.init_app(app)
+
     #: 加载所有restful resource
     api = Api(app)
     add_resources(api)

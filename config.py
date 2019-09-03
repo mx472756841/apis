@@ -16,6 +16,11 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     CORS_ORIGINS = ["http://localhost:9527"]
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+                              'mysql+pymysql://root:root@localhost:3306/root'
+
+    print(os.environ.get('DEV_DATABASE_URL'))
 
 
 class TestingConfig(Config):

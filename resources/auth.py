@@ -6,17 +6,17 @@
 @time: 2019/8/22 14:54
 """
 
-from flask_restful import Resource
+from resources.base import BaseResource
 
 
-class Auth(Resource):
+class Auth(BaseResource):
 
     def post(self):
         """
         用户登录返回Token信息
         :return:
         """
-        return {'code': 20000, 'data': 'admin-token'}
+        return self.success('admin-token')
 
 
 resources = [
