@@ -46,6 +46,7 @@ def create_app():
 
     #: app配置环境处理
     app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
 
     #: 数据库处理
     db.init_app(app)

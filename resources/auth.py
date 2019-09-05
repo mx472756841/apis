@@ -5,8 +5,11 @@
 @file: auth.py
 @time: 2019/8/22 14:54
 """
+from flask import request, current_app
 
 from resources.base import BaseResource
+from app import db
+from utils.utils import get_uuid
 
 
 class Auth(BaseResource):
@@ -16,10 +19,38 @@ class Auth(BaseResource):
         用户登录返回Token信息
         :return:
         """
+        user_info = request.json
+        username = user_info.get('username')
+        password = user_info.get('password')
+        if not username or not password:
+            return self.fail("用户名和密码不可以为空")
+
         sql = """
-            
+            select id as user_id, password, is_active
+            from base_user_info
+            where username = :username
         """
-        return self.success({'token': 'admin-token'})
+        cur = db.session.execute(sql, {"username": username})
+        query_user = cur.fetchone()
+        if not query_user:
+            return self.fail("用户不存在")
+
+        if not query_user['is_active']:
+            return self.fail("该用户已经被锁定，请联系系统管理员")
+
+        # todo 密码进行加密处理
+        if query_user['password'] != password:
+            return self.fail("密码错误，请检查后重试")
+
+        # todo 连续错误次数锁定账号
+        # todo 连续错误，要求前端输入验证码
+
+        # 生成token，返回前端
+        token = get_uuid()
+        token_key = current_app.config['TOKEN_KEY'] % token
+        current_app.redis.set(token_key, query_user['user_id'])
+
+        return self.success({'token': token})
 
 
 class User(BaseResource):
@@ -56,6 +87,7 @@ class UserRoutes(BaseResource):
     """
     获取用户的routes
     """
+
     def get(self):
         return self.success({})
 
