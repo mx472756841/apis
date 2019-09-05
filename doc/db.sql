@@ -37,4 +37,18 @@ CREATE TABLE `base_role_route_info`  (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
--- 用户角色表
+-- 用户表
+CREATE TABLE `base_user_info`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `username` varchar(100) NOT NULL COMMENT '用户名 登录使用',
+  `name` varchar(150) NOT NULL COMMENT '用户昵称',
+  `avatar` varchar(200) NOT NULL DEFAULT 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'  COMMENT '用户头像',
+  `password` varchar(150) NOT NULL COMMENT '用户密码',
+  `email` varchar(200) COMMENT '用户邮箱',
+  `introduction` text COMMENT '我的介绍',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1 COMMENT '激活状态 0:未激活 1:已激活',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `username` (`username`)
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;

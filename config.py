@@ -4,7 +4,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'CK7HjdKShHJTrDyftqCFSnpDscx'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'CK7HjdKShHJTrDyftqCFSnpDscx!-=09'
     #: 权限白名单
     WHITE_ROUTE_LIST = [
         "^/login"
@@ -19,8 +19,6 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
                               'mysql+pymysql://root:root@localhost:3306/root'
-
-    print(os.environ.get('DEV_DATABASE_URL'))
 
 
 class TestingConfig(Config):

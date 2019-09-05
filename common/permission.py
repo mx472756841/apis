@@ -23,7 +23,7 @@ def get_roles():
             "description": desc,
             "routes": routes
         })
-
+    print(roles_info)
     return roles_info
 
 

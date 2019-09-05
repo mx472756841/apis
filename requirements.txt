@@ -5,3 +5,4 @@ flask_httpauth>=3.3.0
 Flask-SQLAlchemy==2.3.1
 pymysql==0.9.3
 gunicorn==19.9.0
+redis
