@@ -7,8 +7,8 @@
 """
 from flask import request, current_app
 
-from resources.base import BaseResource
 from app import db
+from resources.base import BaseResource
 from utils.utils import get_uuid
 
 
@@ -48,8 +48,7 @@ class Auth(BaseResource):
         # 生成token，返回前端
         token = get_uuid()
         token_key = current_app.config['TOKEN_KEY'] % token
-        current_app.redis.set(token_key, query_user['user_id'])
-
+        current_app.redis.setex(token_key, 30 * 24 * 60 * 60, query_user['user_id'])
         return self.success({'token': token})
 
 
