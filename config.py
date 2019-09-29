@@ -1,11 +1,14 @@
+import logging.config
 import os
 
+from common.log import Log
 from utils.redis import RedisClient
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    SERVICE_NAME = "api"
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'CK7HjdKShHJTrDyftqCFSnpDscx!-=09'
     #: 权限白名单
     WHITE_ROUTE_LIST = [
@@ -20,13 +23,32 @@ class Config:
     REDIS_PASS = os.environ.get('REDIS_PASS') or "example"
     REDIS_DB = os.environ.get('REDIS_DB') or 0
 
+    # 数据库配置
+    DB_HOST = os.environ.get('DB_HOST') or "127.0.0.1"
+    DB_PORT = os.environ.get('DB_PORT') or 3306
+    DB_USER = os.environ.get('DB_USER') or "root"
+    DB_PASS = os.environ.get('DB_PASS') or "123"
+    DB_NAME = os.environ.get('DB_NAME') or "root"
+
+
+    # 构建日志相关信息
+    LOG_DIR = os.path.join(basedir, 'logs')
+    if not os.path.isdir(LOG_DIR):
+        os.mkdir(LOG_DIR)
+
+    Log.LOG_PATH = LOG_DIR
+    Log.SERVICE_NAME = SERVICE_NAME
+    logging.config.dictConfig(Log.LOG_CONFIG_DICT)
+
     @classmethod
     def init_app(cls, app):
         app.redis = RedisClient.get_client(cls.REDIS_HOST, cls.REDIS_PORT,
                                            cls.REDIS_DB, cls.REDIS_PASS)
+        app.logger = logging.getLogger("full_logger")
 
     # token缓存key
     TOKEN_KEY = "token:%s:key"
+
 
 class DevelopmentConfig(Config):
     DEBUG = True

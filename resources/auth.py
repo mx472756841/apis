@@ -61,7 +61,7 @@ class User(BaseResource):
         :return:
         """
         data = {
-            "roles": ['admin'],
+            "roles": ['editor'],
             "introduction": 'I am a super administrator',
             "avatar": 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
             "name": 'Super Admin'
@@ -88,7 +88,28 @@ class UserRoutes(BaseResource):
     """
 
     def get(self):
-        return self.success({})
+        data = [
+            {
+                'path': '/icon',
+                'name': 'IconManage',
+                'meta': {
+                    'roles': ['admin', 'editor']
+                },
+                'children': [
+                    {
+                        'path': 'index',
+                        'name': 'Icons',
+                        'meta': {
+                            'title': 'Icons',
+                            'icon': 'icon',
+                            'noCache': True,
+                            'roles': ['admin', 'editor']
+                        }
+                    }
+                ]
+            }
+        ]
+        return self.success(data)
 
 
 resources = [

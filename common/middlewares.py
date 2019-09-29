@@ -5,7 +5,10 @@
 @file: middlewares.py
 @time: 2019/8/22 17:12
 """
+import pymysql
 from flask import current_app
+
+from utils.mysql import MyDictCursor
 
 
 def open_db():
@@ -13,15 +16,33 @@ def open_db():
     打开数据库连接
     :return:
     """
-    pass
+    try:
+        db_conn = pymysql.connect(
+            host=current_app.config['DB_HOST'],
+            port=int(current_app.config['DB_PORT']),
+            user=current_app.config['DB_USER'],
+            password=current_app.config['DB_PASS'],
+            db=current_app.config['DB_NAME'],
+            charset="utf8mb4",
+            cursorclass=MyDictCursor,
+            autocommit=False
+        )
+        current_app.db = db_conn
+    except:
+        current_app.logger.exception("打开数据库失败")
+        return "系统错误，稍后重试"
 
 
-def close_db():
+def close_db(resp):
     """
     关闭数据库连接
     :return:
     """
-    pass
+    try:
+        current_app.db.close()
+    except:
+        current_app.logger.exception("关闭数据库失败")
+    return resp
 
 
 def check_auth():

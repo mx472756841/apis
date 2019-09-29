@@ -13,7 +13,7 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
-from common.middlewares import before_request_func
+from common.middlewares import before_request_func, after_request_func
 from config import config
 
 db = SQLAlchemy()
@@ -57,6 +57,10 @@ def create_app():
     #: 统一加载before_request
     for func in before_request_func:
         app.before_request(func)
+
+    #: 统一加载after_request
+    for func in after_request_func:
+        app.after_request(func)
 
     #: 跨域访问, 指定允许的请求地址 直接指定参数，也可以指定单独path的跨域请求处理
     #: https://flask-cors.readthedocs.io/en/latest/
